@@ -8,6 +8,8 @@ import (
 
 func Literally(literal string) Pattern { return pattern{regexp.QuoteMeta(literal)} }
 
+func OneOf(chars ...rune) Pattern { return pattern{fmt.Sprintf("[%s]", string(chars))} }
+
 func Maybe(p Pattern) Pattern { return pattern{fmt.Sprintf("(?:%s)?", p.Token())} }
 
 func Some(p Pattern) Pattern { return pattern{fmt.Sprintf("(?:%s)+", p.Token())} }
