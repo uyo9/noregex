@@ -27,12 +27,12 @@ func (p pattern) With(fs ...Flag) Pattern {
 	return pattern{fmt.Sprintf("(?%s:%s)", raw, p.value)}
 }
 
-func (p pattern) Then(pp Pattern) Pattern {
-	return pattern{fmt.Sprintf("%s%s", p.value, pp.Token())}
-}
-
 func (p pattern) Or(pp Pattern) Pattern {
 	return pattern{fmt.Sprintf("%s|%s", p.value, pp.Token())}
+}
+
+func (p pattern) Then(pp Pattern) Pattern {
+	return pattern{fmt.Sprintf("%s%s", p.value, pp.Token())}
 }
 
 func (p pattern) Grouped() Pattern { return pattern{fmt.Sprintf("(%s)", p.value)} }
