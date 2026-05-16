@@ -37,6 +37,27 @@ func TestLiterally(t *testing.T) {
 	}
 }
 
+func TestOneOf(t *testing.T) {
+	tests := []struct {
+		name  string
+		input []rune
+		want  string
+	}{
+		{"digits", []rune{'1', '2', '3'}, "[123]"},
+		{"character", []rune{'a'}, "[a]"},
+		{"vowels", []rune{'a', 'e', 'i', 'o', 'u'}, "[aeiou]"},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			got := no.OneOf(tt.input...).Token()
+			if got != tt.want {
+				t.Errorf("OneOf(%q) = %q, want %q", string(tt.input), got, tt.want)
+			}
+		})
+	}
+}
+
 func TestMaybe(t *testing.T) {
 	tests := []struct {
 		name  string
