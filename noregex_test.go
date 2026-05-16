@@ -75,6 +75,18 @@ func TestNew(t *testing.T) {
 			false,
 		},
 		{
+			"not digit pattern repeated 3 times",
+			[]no.Token{no.LineStart(), no.Repeated(no.NotDigit()).Exactly(3), no.LineEnd()},
+			"abc",
+			true,
+		},
+		{
+			"some of vowels",
+			[]no.Token{no.LineStart(), no.Some(no.OneOf('a', 'e', 'i', 'o', 'u')), no.LineEnd()},
+			"aeioux",
+			false,
+		},
+		{
 			"either",
 			[]no.Token{no.Either(no.Literally("foo"), no.Literally("bar"))},
 			"bar",
