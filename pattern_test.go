@@ -6,6 +6,27 @@ import (
 	no "github.com/uyo9/noregex"
 )
 
+func TestWith(t *testing.T) {
+	tests := []struct {
+		name  string
+		input no.Pattern
+		flags []no.Flag
+		want  string
+	}{
+		{"single flag", no.Literally("foo"), []no.Flag{no.CaseIgnored()}, "(?i:foo)"},
+		{"multiple flags", no.Literally("foo"), []no.Flag{no.CaseIgnored(), no.Multilined()}, "(?im:foo)"},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			got := tt.input.With(tt.flags...).Token()
+			if got != tt.want {
+				t.Errorf("With(%q) = %q, want %q", tt.input.Token(), got, tt.want)
+			}
+		})
+	}
+}
+
 func TestOr(t *testing.T) {
 	tests := []struct {
 		name string
