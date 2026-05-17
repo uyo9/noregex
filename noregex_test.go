@@ -87,6 +87,24 @@ func TestNew(t *testing.T) {
 			false,
 		},
 		{
+			"ASCII alpha letter",
+			[]no.Token{no.Some(no.ASCII("alpha"))},
+			"foo",
+			true,
+		},
+		{
+			"Unicode not Han Chinese no match",
+			[]no.Token{no.Some(no.NotUnicode("Han"))},
+			"你好",
+			false,
+		},
+		{
+			"Unicode Greek no match",
+			[]no.Token{no.LineStart(), no.Some(no.Unicode("Greek")), no.LineEnd()},
+			"你好",
+			false,
+		},
+		{
 			"either",
 			[]no.Token{no.Either(no.Literally("foo"), no.Literally("bar"))},
 			"bar",
