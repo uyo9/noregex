@@ -6,6 +6,26 @@ import (
 	no "github.com/uyo9/noregex"
 )
 
+func TestRaw(t *testing.T) {
+	tests := []struct {
+		name  string
+		input string
+		want  string
+	}{
+		{"literal", `\f`, `\f`},
+		{"complex", `(?:\d+)`, `(?:\d+)`},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			got := no.Raw(tt.input).Token()
+			if got != tt.want {
+				t.Errorf("Raw(%q) = %q, want %q", tt.input, got, tt.want)
+			}
+		})
+	}
+}
+
 func TestLiterally(t *testing.T) {
 	tests := []struct {
 		name  string
