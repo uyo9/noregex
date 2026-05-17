@@ -8,6 +8,12 @@ import (
 
 func Literally(literal string) Pattern { return pattern{regexp.QuoteMeta(literal)} }
 
+func ASCII(name string) Pattern    { return pattern{fmt.Sprintf("[[:%s:]]", name)} }
+func NotASCII(name string) Pattern { return pattern{fmt.Sprintf("[[:^%s:]]", name)} }
+
+func Unicode(name string) Pattern    { return pattern{fmt.Sprintf(`[\p{%s}]`, name)} }
+func NotUnicode(name string) Pattern { return pattern{fmt.Sprintf(`[\P{%s}]`, name)} }
+
 func OneOf(chars ...rune) Pattern { return pattern{fmt.Sprintf("[%s]", string(chars))} }
 
 func Maybe(p Pattern) Pattern { return pattern{fmt.Sprintf("(?:%s)?", p.Token())} }
