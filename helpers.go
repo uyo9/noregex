@@ -6,6 +6,8 @@ import (
 	"strings"
 )
 
+func Raw(s string) Pattern { return pattern{s} }
+
 func Literally(literal string) Pattern { return pattern{regexp.QuoteMeta(literal)} }
 
 func ASCII(name string) Pattern    { return pattern{fmt.Sprintf("[[:%s:]]", name)} }
