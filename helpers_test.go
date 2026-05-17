@@ -37,6 +37,88 @@ func TestLiterally(t *testing.T) {
 	}
 }
 
+func TestASCII(t *testing.T) {
+	tests := []struct {
+		name  string
+		input string
+		want  string
+	}{
+		{"alpha", "alpha", "[[:alpha:]]"},
+		{"digit", "digit", "[[:digit:]]"},
+		{"space", "space", "[[:space:]]"},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			got := no.ASCII(tt.input).Token()
+			if got != tt.want {
+				t.Errorf("ASCII(%q) = %q, want %q", tt.input, got, tt.want)
+			}
+		})
+	}
+}
+
+func TestNotASCII(t *testing.T) {
+	tests := []struct {
+		name  string
+		input string
+		want  string
+	}{
+		{"alpha", "alpha", "[[:^alpha:]]"},
+		{"digit", "digit", "[[:^digit:]]"},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			got := no.NotASCII(tt.input).Token()
+			if got != tt.want {
+				t.Errorf("NotASCII(%q) = %q, want %q", tt.input, got, tt.want)
+			}
+		})
+	}
+}
+
+func TestUnicode(t *testing.T) {
+	tests := []struct {
+		name  string
+		input string
+		want  string
+	}{
+		{"L", "L", `[\p{L}]`},
+		{"Han", "Han", `[\p{Han}]`},
+		{"Greek", "Greek", `[\p{Greek}]`},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			got := no.Unicode(tt.input).Token()
+			if got != tt.want {
+				t.Errorf("Unicode(%q) = %q, want %q", tt.input, got, tt.want)
+			}
+		})
+	}
+}
+
+func TestNotUnicode(t *testing.T) {
+	tests := []struct {
+		name  string
+		input string
+		want  string
+	}{
+		{"L", "L", `[\P{L}]`},
+		{"Han", "Han", `[\P{Han}]`},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			got := no.NotUnicode(tt.input).Token()
+			if got != tt.want {
+				t.Errorf("NotUnicode(%q) = %q, want %q", tt.input, got, tt.want)
+			}
+		})
+	}
+}
+
 func TestOneOf(t *testing.T) {
 	tests := []struct {
 		name  string
